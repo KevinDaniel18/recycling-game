@@ -1,0 +1,17 @@
+export const residuos = [
+  { emoji: "🍌", type: "organico" },
+  { emoji: "📰", type: "reciclable" },
+  { emoji: "🪫", type: "peligroso" },
+  { emoji: "🩹", type: "no reciclable" },
+  { emoji: "🍎", type: "organico" },
+  { emoji: "📦", type: "reciclable" },
+  { emoji: "💊", type: "peligroso" },
+  { emoji: "🧻", type: "no reciclable" },
+  { emoji: "🥦", type: "organico" },
+  { emoji: "📄", type: "reciclable" },
+  { emoji: "💡", type: "peligroso" },
+  { emoji: "🥫", type: "reciclable" },
+  { emoji: "🍇", type: "organico" },
+  { emoji: "🔋", type: "peligroso" },
+  { emoji: "☕", type: "no reciclable" },
+];

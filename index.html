@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Juego de Reciclaje</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --color-primary: #2dd4bf;
+        --color-secondary: #0f766e;
+        --color-background: #ecfeff;
+        --color-text: #134e4a;
+        --color-verde: #22c55e;
+        --color-roja: #ef4444;
+        --color-blanca: #f8fafc;
+        --color-gris: #64748b;
+        --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --radius: 12px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Nunito", sans-serif;
+        text-align: center;
+        background-color: var(--color-background);
+        color: var(--color-text);
+        line-height: 1.6;
+        padding: 20px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        max-width: 800px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      h1 {
+        margin: 0 0 20px;
+        color: var(--color-secondary);
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      .status-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 10px 15px;
+        background-color: var(--color-primary);
+        color: white;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .status,
+      #timer {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+
+      .game-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: 20px 0;
+        gap: 15px;
+      }
+
+      .items-container {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        margin-bottom: 20px;
+      }
+
+      .item {
+        width: 80px;
+        height: 80px;
+        margin: 8px;
+        background-color: white;
+        border: 3px solid #e2e8f0;
+        border-radius: var(--radius);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.2s ease;
+        box-shadow: var(--shadow);
+      }
+
+      .item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+
+      .item.selected {
+        border-color: var(--color-primary);
+        transform: scale(1.05);
+        box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.3);
+      }
+
+      .bins-container {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .bin {
+        width: 120px;
+        height: 140px;
+        margin: 10px;
+        border-radius: var(--radius);
+        color: white;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .bin:before {
+        content: "🗑️";
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      .bin:hover {
+        transform: scale(1.05);
+        cursor: pointer;
+      }
+
+      .verde {
+        background-color: var(--color-verde);
+      }
+      .roja {
+        background-color: var(--color-roja);
+      }
+      .blanca {
+        background-color: var(--color-blanca);
+        color: var(--color-text);
+        border: 2px solid #e2e8f0;
+      }
+      .gris {
+        background-color: var(--color-gris);
+      }
+
+      #message {
+        font-size: 1.2rem;
+        margin: 20px 0;
+        font-weight: bold;
+        min-height: 30px;
+        padding: 10px;
+        border-radius: var(--radius);
+        transition: all 0.3s ease;
+      }
+
+      .message-success {
+        background-color: rgba(34, 197, 94, 0.2);
+        color: #166534;
+      }
+
+      .message-error {
+        background-color: rgba(239, 68, 68, 0.2);
+        color: #991b1b;
+      }
+
+      .btn {
+        display: none;
+        margin: 10px;
+        padding: 12px 24px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        background-color: var(--color-primary);
+        color: white;
+        border: none;
+        border-radius: var(--radius);
+        transition: all 0.2s ease;
+        box-shadow: var(--shadow);
+      }
+
+      .btn:hover {
+        background-color: var(--color-secondary);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+
+      .level-indicator {
+        position: relative;
+        height: 10px;
+        background-color: #e2e8f0;
+        border-radius: 5px;
+        margin: 20px 0;
+        overflow: hidden;
+      }
+
+      .level-progress {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        background-color: var(--color-primary);
+        transition: width 0.5s ease;
+      }
+
+      @media (max-width: 768px) {
+        .status-bar {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .item {
+          width: 70px;
+          height: 70px;
+          font-size: 32px;
+        }
+
+        .bin {
+          width: 100px;
+          height: 120px;
+          font-size: 0.9rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 1.8rem;
+        }
+
+        .item {
+          width: 60px;
+          height: 60px;
+          font-size: 28px;
+          margin: 5px;
+        }
+
+        .bin {
+          width: 90px;
+          height: 110px;
+          font-size: 0.8rem;
+          margin: 5px;
+        }
+
+        .btn {
+          padding: 10px 20px;
+          font-size: 0.9rem;
+        }
+      }
+
+      /* Animaciones */
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .pulse {
+        animation: pulse 1.5s infinite;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .fade-in {
+        animation: fadeIn 0.5s ease-in;
+      }
+
+      .disabled {
+        opacity: 0.5;
+        pointer-events: none;
+        filter: grayscale(100%);
+        transition: all 0.3s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container fade-in">
+      <h1>🌍 Juego de Reciclaje</h1>
+
+      <div class="status-bar">
+        <div class="status">
+          <span>Nivel: <span id="level">1</span></span>
+        </div>
+        <div id="timer">⏱️ Tiempo: <span id="time">30</span>s</div>
+        <div class="status">
+          <span>Puntaje: <span id="score">0</span></span>
+        </div>
+      </div>
+
+      <div class="level-indicator">
+        <div class="level-progress" id="levelProgress"></div>
+      </div>
+
+      <div class="items-container">
+        <h2>Selecciona un residuo</h2>
+        <div id="items" class="game-container"></div>
+      </div>
+
+      <div class="bins-container">
+        <h2>Colócalo en el contenedor correcto</h2>
+        <div id="bins" class="game-container">
+          <div class="bin verde" data-bin="organico">Verde<br />(Orgánico)</div>
+          <div class="bin blanca" data-bin="reciclable">
+            Blanca<br />(Reciclable)
+          </div>
+          <div class="bin roja" data-bin="peligroso">Roja<br />(Peligroso)</div>
+          <div class="bin gris" data-bin="no reciclable">
+            Gris<br />(No reciclable)
+          </div>
+        </div>
+      </div>
+
+      <div id="message"></div>
+
+      <div>
+        <button id="nextLevelBtn" class="btn">➡️ Siguiente nivel</button>
+        <button id="retryLevelBtn" class="btn">🔁 Reintentar nivel</button>
+      </div>
+    </div>
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>
